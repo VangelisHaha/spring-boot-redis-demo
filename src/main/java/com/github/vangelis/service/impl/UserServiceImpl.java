@@ -4,6 +4,8 @@ import com.github.vangelis.dao.UserDao;
 import com.github.vangelis.model.UserDO;
 import com.github.vangelis.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService {
      * @return 查询结果
      */
     @Override
+    @Cacheable(value = "user",key = "'listUsers'",unless = "#result==null")
     public List<UserDO> listUsers() {
         return userDao.findAll();
     }
@@ -48,6 +51,7 @@ public class UserServiceImpl implements UserService {
      * @return 添加结果
      */
     @Override
+    @CacheEvict(value = "user",key = "#userDO.id")
     public String updateUser(UserDO userDO) {
         userDao.saveAndFlush(userDO);
         return "更新成功";
@@ -60,6 +64,7 @@ public class UserServiceImpl implements UserService {
      * @return 删除结果
      */
     @Override
+    @CacheEvict(value = "user",key = "#userId")
     public String deleteUser(Long userId) {
         if (userDao.existsById(userId)) {
             userDao.deleteById(userId);
@@ -74,6 +79,7 @@ public class UserServiceImpl implements UserService {
      * @return 查询结果
      */
     @Override
+    @Cacheable(value = "user",key = "#userId",unless = "#result==null")
     public UserDO getUserById(Long userId) {
         return userDao.findById(userId)
                 .orElse(null);
