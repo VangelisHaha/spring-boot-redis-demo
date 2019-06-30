@@ -28,4 +28,54 @@ public class UserServiceImpl implements UserService {
     public List<UserDO> listUsers() {
         return userDao.findAll();
     }
+
+    /**
+     * 添加一个用户
+     *
+     * @param userDO 添加对象
+     * @return 添加结果
+     */
+    @Override
+    public String addUser(UserDO userDO) {
+        userDao.saveAndFlush(userDO);
+        return "新增成功";
+    }
+
+    /**
+     * 根据id更新一个用户
+     *
+     * @param userDO 需要更新的对象
+     * @return 添加结果
+     */
+    @Override
+    public String updateUser(UserDO userDO) {
+        userDao.saveAndFlush(userDO);
+        return "更新成功";
+    }
+
+    /**
+     * 根据id删除一个对象
+     *
+     * @param userId 用户id
+     * @return 删除结果
+     */
+    @Override
+    public String deleteUser(Long userId) {
+        if (userDao.existsById(userId)) {
+            userDao.deleteById(userId);
+        }
+        return "删除成功";
+    }
+
+    /**
+     * 根据用户id查询
+     *
+     * @param userId 用户id
+     * @return 查询结果
+     */
+    @Override
+    public UserDO getUserById(Long userId) {
+        return userDao.findById(userId)
+                .orElse(null);
+    }
 }
