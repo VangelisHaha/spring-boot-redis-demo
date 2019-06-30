@@ -3,9 +3,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://blog-mysql/blog?charactorEncoding=utf-8&useSSL=false
-    username: root
-    password: root
+    url: jdbc:mysql://ip/blog?charactorEncoding=utf-8&useSSL=false
+    username: name
+    password: password
   jpa:
     # 打印sql
     show-sql: true
