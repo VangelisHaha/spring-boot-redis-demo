@@ -1,0 +1,15 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://blog-mysql/blog?charactorEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+  jpa:
+    # 打印sql
+    show-sql: true
+    # 自动执行ddl语句，就是自动创表，有风险。测试可以用。生产环境一定要关掉！
+    generate-ddl: true
+    # 默认的存储引擎切换为 InnoDB 用的
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
