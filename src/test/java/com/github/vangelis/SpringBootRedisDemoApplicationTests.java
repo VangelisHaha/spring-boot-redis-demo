@@ -2,11 +2,12 @@ package com.github.vangelis;
 
 import com.github.vangelis.dao.UserDao;
 import com.github.vangelis.model.UserDO;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -16,13 +17,17 @@ public class SpringBootRedisDemoApplicationTests {
     @Autowired
     private  UserDao userDao;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Test
     public void contextLoads() {
     }
 
 
-    @Before
+//    @Before
     public void insertUsers(){
         userDao.save(UserDO.builder()
                 .name("Y")
@@ -42,6 +47,16 @@ public class SpringBootRedisDemoApplicationTests {
     @Test
     public void selectUser(){
         System.out.println(userDao.findAll());
+    }
+
+
+    @Test
+    public void redisTest(){
+//        redisTemplate.opsForValue().set("key", "value");
+////        System.out.println(redisTemplate.opsForValue().get("key"));
+
+        stringRedisTemplate.opsForValue().set("haha", "asdf");
+        System.out.println(stringRedisTemplate.opsForValue().get("haha"));
     }
 
 }
