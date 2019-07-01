@@ -32,7 +32,7 @@ public class UserController {
      *  根据用户id查询
      * @return 查询结果
      */
-    @RedisLook(lookName = "userById")
+    @RedisLook(lookName = "#userId")
     @GetMapping("user/{userId}")
     public UserDO getUserById(@PathVariable("userId") Long userId) {
         try {
