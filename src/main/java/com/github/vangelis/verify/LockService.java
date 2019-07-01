@@ -1,10 +1,3 @@
-/**
- * FileName: LockService
- * Author:   wgz
- * Date:     2018-11-14 18:03
- * Description: redis分布式锁实现
- * History:
- */
 package com.github.vangelis.verify;
 
 
@@ -33,7 +26,7 @@ public class LockService {
      * @param acquireTimeOut 重复获取锁有效时间
      * @param timeOut 锁的超时时间
      */
-    public String  getRedisLock(String lockKey,Long acquireTimeOut, Long  timeOut){
+    String  getRedisLock(String lockKey, Long acquireTimeOut, Long timeOut){
         String lockId = UUID.randomUUID().toString();
         int lockTime=(int)(timeOut/acquireTimeOut);
         //获取过期的时间
@@ -54,11 +47,11 @@ public class LockService {
      * @param lockKey 锁key
      * @param lockId  锁id
      */
-    public void releaseLock(String lockKey,String lockId) {
+    void releaseLock(String lockKey, String lockId) {
         if (StrUtil.isNotEmpty(lockId)&&StrUtil.isNotEmpty(lockKey)) {
             String currentValue = stringRedisTemplate.opsForValue().get(REDIS_LOCK_PREFIX+lockKey);
             //判断锁id和key都符合才允许解锁
-            if (StrUtil.isNotEmpty(currentValue) && currentValue.equals(lockId)) {
+            if (StrUtil.isNotEmpty(currentValue) && lockId.equals(currentValue)) {
                 //删除key
                 stringRedisTemplate.opsForValue().getOperations().delete(REDIS_LOCK_PREFIX+lockKey);
             }

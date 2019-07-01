@@ -1,10 +1,3 @@
-/**
- * FileName: RedisCheckAspect
- * Author:   wgz
- * Date:     2018-11-14 11:40
- * Description: redis分布式切面
- * History:
- */
 package com.github.vangelis.verify;
 
 
@@ -26,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RedisLookAspect {
     @Autowired
-    private LockService lockService;
+    private  LockService lockService;
 
     /**
      * 自定义切点为redis注解
