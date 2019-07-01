@@ -3,9 +3,11 @@ package com.github.vangelis.verify;
 
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
+import com.github.vangelis.config.RedisTemplateConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,10 +16,14 @@ import java.util.concurrent.TimeUnit;
  * @author   Vangelis
  * @date 2019/6/30 21:07
  */
-@Component
+@Configuration
+@ConditionalOnBean(RedisTemplateConfig.class)
 public class LockService {
     @Autowired
    private   StringRedisTemplate stringRedisTemplate;
+    /**
+     *  锁前缀
+     */
     private final String  REDIS_LOCK_PREFIX="lock:";
 
     /**
@@ -28,14 +34,14 @@ public class LockService {
      */
     String  getRedisLock(String lockKey, Long acquireTimeOut, Long timeOut){
         String lockId = UUID.randomUUID().toString();
-        int lockTime=(int)(timeOut/acquireTimeOut);
         //获取过期的时间
         long endTime = System.currentTimeMillis() + acquireTimeOut;
         //循环获取锁
         while (System.currentTimeMillis()<endTime){
             if(stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK_PREFIX+lockKey,lockId)){
                 //可以成功设置,也就是key不存在
-                stringRedisTemplate.expire(REDIS_LOCK_PREFIX+lockKey, lockTime, TimeUnit.SECONDS);
+                stringRedisTemplate.expire(REDIS_LOCK_PREFIX+lockKey, timeOut, TimeUnit.SECONDS);
+                // 缓存完成后返回缓存后的key
                 return lockId;
             }
         }

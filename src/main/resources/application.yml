@@ -1,5 +1,9 @@
 server:
   port: 8080
+  tomcat:
+    # 超时时间，防止报拒绝连接异常
+    max-connections: 30000
+    uri-encoding: UTF-8
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -15,5 +15,18 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RedisLook {
 
+    /**
+     *  锁名字(key)
+     */
     String lookName();
+
+    /**
+     * 锁的超时时间(毫秒)  锁的有效期。即使没获得锁，自动过期
+     */
+    long  timeOut() default 10000L;
+
+    /**
+     *  循环获取锁的等待时间(毫秒)  线程没有获取锁会在这个时间段重复去获取锁
+     */
+    long acquireTimeOut() default 3000L;
 }

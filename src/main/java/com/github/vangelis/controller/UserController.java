@@ -2,6 +2,7 @@ package com.github.vangelis.controller;
 
 import com.github.vangelis.model.UserDO;
 import com.github.vangelis.service.UserService;
+import com.github.vangelis.verify.RedisLook;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +32,15 @@ public class UserController {
      *  根据用户id查询
      * @return 查询结果
      */
+    @RedisLook(lookName = "userById")
     @GetMapping("user/{userId}")
     public UserDO getUserById(@PathVariable("userId") Long userId) {
+        try {
+            //当前线程睡眠2秒钟方便测试
+            Thread.sleep(2000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return userService.getUserById(userId);
     }
 

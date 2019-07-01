@@ -43,7 +43,6 @@ public class RedisTemplateConfig {
         redisTemplate.setHashKeySerializer(stringSerializer);
         redisTemplate.setHashValueSerializer(genericJackson2JsonRedisSerializer);
         redisTemplate.setConnectionFactory(factory);
-
         //设置redis默认序列化
         redisTemplate.setDefaultSerializer(genericJackson2JsonRedisSerializer);
         return redisTemplate;
