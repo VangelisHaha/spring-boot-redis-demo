@@ -38,7 +38,9 @@ public class LockService {
         long endTime = System.currentTimeMillis() + acquireTimeOut;
         //循环获取锁
         while (System.currentTimeMillis()<endTime){
-            if(stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK_PREFIX+lockKey,lockId,timeOut, TimeUnit.SECONDS)){
+            if(stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK_PREFIX+lockKey,lockId)){
+                //可以成功设置,也就是key不存在
+                stringRedisTemplate.expire(REDIS_LOCK_PREFIX+lockKey, timeOut, TimeUnit.SECONDS);
                 // 缓存完成后返回缓存后的key
                 return lockId;
             }
